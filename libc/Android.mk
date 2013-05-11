@@ -439,11 +439,11 @@ libc_common_src_files += \
 	string/strcpy.c \
 	bionic/pthread-atfork.c \
 	bionic/pthread-rwlocks.c \
-	bionic/pthread-timers.c \
+#	bionic/pthread-timers.c \
 	bionic/ptrace.c
 
-libc_static_common_src_files += \
-        bionic/pthread.c \
+#libc_static_common_src_files += \
+#        bionic/pthread.c \
 
 libc_arch_static_src_files := \
 	bionic/dl_iterate_phdr_static.c
@@ -485,11 +485,11 @@ libc_common_src_files += \
 libc_common_src_files += \
 	bionic/pthread-atfork.c \
 	bionic/pthread-rwlocks.c \
-	bionic/pthread-timers.c \
+#	bionic/pthread-timers.c \
 	bionic/ptrace.c
 
-libc_static_common_src_files += \
-	bionic/pthread.c
+#libc_static_common_src_files += \
+#	bionic/pthread.c
 
 libc_arch_static_src_files := \
 	bionic/dl_iterate_phdr_static.c
@@ -740,7 +740,7 @@ WITH_MALLOC_CHECK_LIBC_A := $(strip $(WITH_MALLOC_CHECK_LIBC_A))
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := bionic/ssp.c
-LOCAL_CFLAGS := $(libc_common_cflags) -fno-stack-protector
+LOCAL_CFLAGS := $(libc_common_cflags) -fno-stack-protector -fno-strict-aliasing
 LOCAL_C_INCLUDES := $(libc_common_c_includes)
 LOCAL_MODULE := libbionic_ssp
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
@@ -762,7 +762,8 @@ LOCAL_SRC_FILES := $(libc_upstream_netbsd_src_files)
 LOCAL_CFLAGS := \
     $(libc_common_cflags) \
     -I$(LOCAL_PATH)/upstream-netbsd \
-    -include upstream-netbsd/netbsd-compat.h
+    -include upstream-netbsd/netbsd-compat.h \
+    -fno-strict-aliasing
 LOCAL_C_INCLUDES := $(libc_common_c_includes)
 LOCAL_MODULE := libc_netbsd
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
@@ -778,7 +779,7 @@ include $(BUILD_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(libc_common_src_files)
-LOCAL_CFLAGS := $(libc_common_cflags)
+LOCAL_CFLAGS := $(libc_common_cflags) -fno-strict-aliasing
 LOCAL_C_INCLUDES := $(libc_common_c_includes)
 LOCAL_MODULE := libc_common
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
@@ -807,7 +808,8 @@ LOCAL_SRC_FILES := \
 
 LOCAL_C_INCLUDES := $(libc_common_c_includes)
 LOCAL_CFLAGS := $(libc_common_cflags) \
-                -DLIBC_STATIC
+                -DLIBC_STATIC \
+                -fno-strict-aliasing
 
 LOCAL_MODULE := libc_nomalloc
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
@@ -830,7 +832,8 @@ LOCAL_SRC_FILES := \
 	bionic/libc_init_static.c
 
 LOCAL_CFLAGS := $(libc_common_cflags) \
-                -DLIBC_STATIC
+                -DLIBC_STATIC \
+                -fno-strict-aliasing
 LOCAL_C_INCLUDES := $(libc_common_c_includes)
 LOCAL_MODULE := libc
 LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
@@ -851,7 +854,7 @@ include $(CLEAR_VARS)
 # Since this code is experimental it is disabled by default.
 # see libc/bionic/pthread_debug.c for details
 
-LOCAL_CFLAGS := $(libc_common_cflags) -DPTHREAD_DEBUG -DPTHREAD_DEBUG_ENABLED=0
+LOCAL_CFLAGS := $(libc_common_cflags) -DPTHREAD_DEBUG -DPTHREAD_DEBUG_ENABLED=0 -fno-strict-aliasing
 LOCAL_C_INCLUDES := $(libc_common_c_includes)
 
 LOCAL_SRC_FILES := \
@@ -906,7 +909,8 @@ include $(CLEAR_VARS)
 
 LOCAL_CFLAGS := \
 	$(libc_common_cflags) \
-	-DMALLOC_LEAK_CHECK
+	-DMALLOC_LEAK_CHECK \
+	-fno-strict-aliasing
 
 LOCAL_C_INCLUDES := $(libc_common_c_includes)
 
@@ -937,7 +941,8 @@ include $(CLEAR_VARS)
 
 LOCAL_CFLAGS := \
 	$(libc_common_cflags) \
-	-DMALLOC_QEMU_INSTRUMENT
+	-DMALLOC_QEMU_INSTRUMENT \
+	-fno-strict-aliasing
 
 LOCAL_C_INCLUDES := $(libc_common_c_includes)
 
